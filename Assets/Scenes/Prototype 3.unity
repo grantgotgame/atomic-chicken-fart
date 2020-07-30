@@ -374,8 +374,8 @@ MonoBehaviour:
   dirtParticle: {fileID: 1614639991}
   jumpSound: {fileID: 8300000, guid: 0f7d0b7c3397f4dac91f20e8a77d2d57, type: 3}
   crashSound: {fileID: 8300000, guid: c0250eeca910d9c4bae147920e57744c, type: 3}
-  jumpForce: 2000
-  gravityModifier: 9
+  jumpForce: 1600
+  doubleJumpForce: 2100
   isOnGround: 1
   gameOver: 0
 --- !u!82 &239363843
