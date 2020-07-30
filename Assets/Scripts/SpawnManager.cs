@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
-{
-    public GameObject obstaclePrefab;
-    private Vector3 spawnPos = new Vector3(25, 0, 0);
+{    
     private float startDelay = 2;
     private float repeatRate = 2;
+
+    private Vector3 spawnPos = new Vector3(25, 0, 0);
+
+    public GameObject[] obstaclePrefab;
+    private int obstacleIndex;
+
     private PlayerController playerControllerScript;
 
     // Start is called before the first frame update
@@ -25,9 +29,12 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnObstacle()
     {
+        // Select random obstacle
+        obstacleIndex = Random.Range(0, obstaclePrefab.Length);
+
         if (playerControllerScript.gameOver == false)
         {
-            Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+            Instantiate(obstaclePrefab[obstacleIndex], spawnPos, obstaclePrefab[obstacleIndex].transform.rotation);
         }
     }
 }
