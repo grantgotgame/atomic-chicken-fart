@@ -37,7 +37,7 @@ public class SpawnManager : MonoBehaviour
         obstacleIndex = Random.Range(0, obstaclePrefab.Length);
 
         // spawn obstacles
-        if (playerControllerScript.gameOver == false)
+        if (!playerControllerScript.gameOver && playerControllerScript.gameHasStarted)
         {
             Instantiate(obstaclePrefab[obstacleIndex], spawnPos, obstaclePrefab[obstacleIndex].transform.rotation);
             // stack boxes and barrels
