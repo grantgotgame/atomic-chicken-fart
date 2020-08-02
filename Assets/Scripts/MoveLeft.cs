@@ -6,8 +6,8 @@ using UnityEngine;
 public class MoveLeft : MonoBehaviour
 {
     private float speed;
-    private float speedInit = 20;
-    private float dashSpeedModifier = 1.5f;
+    private float speedInit = 15;
+    private float dashSpeedModifier = 2f;
     private float leftBound = -10;
 
     public int score = 0;
@@ -39,7 +39,7 @@ public class MoveLeft : MonoBehaviour
                 transform.Translate(Vector3.left * Time.deltaTime * speed);
 
                 // Increase speed and score (more while dash key is pressed)
-                if (Input.GetAxisRaw(dashKey) > 0)
+                if (playerControllerScript.isDashing)
                 {
                     speed = speedInit * dashSpeedModifier;
                     score += 2;
