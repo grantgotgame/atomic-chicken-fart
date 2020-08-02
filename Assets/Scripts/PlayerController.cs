@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource playerAudio;
 
-    public AudioClip jumpSound;
+    public AudioClip fartSound;
     public AudioClip crashSound;
 
     private MoveLeft moveLeftScript;
@@ -22,17 +22,16 @@ public class PlayerController : MonoBehaviour
     private float playerPosXRunning = 0f;
     private float playerPreGameSpeed = 3f;
 
-    private float jumpForce = 1600f;
-    private float doubleJumpForce = 2100f;
+    private float fartForce = 8500f;
     private float gravityModifier = 9f;
-    private float minDoubleJumpHeight = 1.4f;
     private float resetTimer;
     private float resetTimerInit = 2f;
+    private float fartTimer;
+    private float fartTimerInit = .3f;
 
     public bool isOnGround = true;
     public bool gameOver = false;
     public bool gameHasStarted = false;
-    private bool hasDoubleJumped = false;
     private bool isDashing = false;
 
     // Start is called before the first frame update
@@ -60,33 +59,34 @@ public class PlayerController : MonoBehaviour
         {
             // Start game
             gameHasStarted = true;
-            playerAnim.SetFloat("Speed_f", 1f);            
-
-            // Allow player to jump by pressing space while on the ground
-            if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
-            {
-                playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                isOnGround = false;
-                playerAnim.SetTrigger("Jump_trig");
-                playerAudio.PlayOneShot(jumpSound, .25f);
-            }
-
-            // Allow player to double jump at the top of their jump
-            else if (Input.GetKeyDown(KeyCode.Space) && !isOnGround && !gameOver && !hasDoubleJumped
-                && playerRb.position.y > minDoubleJumpHeight)
-            {
-                playerRb.AddForce(Vector3.up * doubleJumpForce, ForceMode.Impulse);
-                hasDoubleJumped = true;
-            }
+            playerAnim.SetFloat("Speed_f", 1f);
 
             // Reset game on game over
-            else if (gameOver)
+            if (gameOver)
             {
                 resetTimer -= Time.deltaTime;
                 dirtParticle.Stop();
                 if (resetTimer < 0)
                 {
                     SceneManager.LoadScene("Prototype 3");
+                }
+            }
+
+            // Allow player to fart jump
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                playerRb.AddForce(Vector3.up * fartForce);
+                fartTimer -= Time.deltaTime;
+                if (isOnGround)
+                {
+                    isOnGround = false;
+                    playerAnim.SetTrigger("Jump_trig");
+                }                
+                if (fartTimer < 0)
+                {
+                    playerAudio.clip = fartSound;
+                    playerAudio.Play();
+                    fartTimer = fartTimerInit;
                 }
             }
 
@@ -113,7 +113,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
-            hasDoubleJumped = false;
         }
 
         // Trigger game over when player collides with an obstacle

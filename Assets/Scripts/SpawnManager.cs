@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
     private float startDelay = 2;
     private float repeatRate = 2;
 
-    private float spawnPosX = 25f;
+    private float spawnPosX = 30f;
     private float spawnPosY = 0f;
     private float spawnPosZ = 0f;
     private Vector3 spawnPos;
