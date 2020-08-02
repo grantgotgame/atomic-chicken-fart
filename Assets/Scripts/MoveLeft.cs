@@ -6,8 +6,8 @@ using UnityEngine;
 public class MoveLeft : MonoBehaviour
 {
     private float speed;
-    private float speedInit = 15;
-    private float dashSpeedModifier = 2f;
+    private float speedInit = 16;
+    private float dashSpeedModifier = 1.8f;
     private float leftBound = -10;
 
     public int score = 0;

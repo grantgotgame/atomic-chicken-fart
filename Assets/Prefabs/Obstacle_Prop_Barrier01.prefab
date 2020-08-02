@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 1476889008106393666}
   - component: {fileID: 1476889008106393665}
   - component: {fileID: 908511751969225439}
+  - component: {fileID: 108080602881499328}
   m_Layer: 0
   m_Name: Obstacle_Prop_Barrier01
   m_TagString: Obstacle
@@ -152,3 +153,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b801b6519ac7d5479b63f3e0b764618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score: 0
+  dashKey: Fire3
+--- !u!108 &108080602881499328
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476889008106542573}
+  m_Enabled: 1
+  serializedVersion: 8
+  m_Type: 0
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
+  m_Intensity: 1
+  m_Range: 5
+  m_SpotAngle: 1
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 1
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
