@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class SpawnManager : MonoBehaviour
 {    
@@ -15,13 +16,19 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] obstaclePrefab;
     private int obstacleIndex;
 
+    private float levelOneMaxScore = 10000f;
+    private float levelTwoMaxScore = 30000f;
+
     private PlayerController playerControllerScript;
+
+    private MoveLeft moveLeftScript;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnPos = new Vector3(spawnPosX, spawnPosY, spawnPosZ);
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+        moveLeftScript = GameObject.Find("Background").GetComponent<MoveLeft>();
         InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
     }
 
@@ -33,8 +40,19 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnObstacle()
     {
-        // Select random obstacle
-        obstacleIndex = Random.Range(0, obstaclePrefab.Length);
+        // Select random obstacle to spawn based on score
+        if (moveLeftScript.score < levelOneMaxScore)
+        {
+            obstacleIndex = 0;
+        }
+        else if (moveLeftScript.score < levelTwoMaxScore)
+        {
+            obstacleIndex = Random.Range(0, 2);
+        }
+        else
+        {
+            obstacleIndex = Random.Range(0, obstaclePrefab.Length);
+        }
 
         // spawn obstacles
         if (!playerControllerScript.gameOver && playerControllerScript.gameHasStarted)

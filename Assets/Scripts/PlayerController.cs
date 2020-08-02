@@ -21,17 +21,16 @@ public class PlayerController : MonoBehaviour
     private float gameStartPos = -1.5f;
     private float playerPreGameSpeed = 3f;
 
-    public float fartForce = 8500f;
-    public float gravityModifier = 9f;
+    private float fartForce = 500f;
     private float resetTimer;
-    private float resetTimerInit = 2f;
+    private float resetTimerInit = 3f;
     private float fartTimer;
-    public float fartTimerInit = .1f;
+    private float fartTimerInit = .19f;
 
-    public bool isOnGround = true;
     public bool gameOver = false;
     public bool gameHasStarted = false;
-    public bool isDashing = false;
+    public bool isFarting = false;
+    public bool isOnGround;
 
     // Start is called before the first frame update
     void Start()
@@ -39,10 +38,10 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
-        Physics.gravity = new Vector3(0, -9.81f * gravityModifier, 0);
         resetTimer = resetTimerInit;
         dirtParticle.Stop();
-        isOnGround = true;
+        gameOver = false;
+        gameHasStarted = false;
     }
 
     // Update is called once per frame
@@ -74,23 +73,23 @@ public class PlayerController : MonoBehaviour
             {                
                 playerRb.AddForce(Vector3.up * fartForce); // Apply fart force                
                 fartTimer -= Time.deltaTime; // Countdown timer to prevent fart sounds from overlapping
-                
+
                 // Flap wings
+                isOnGround = false;
                 playerAnim.SetBool("Run", true);
                 playerAnim.SetBool("Walk", false);
 
                 // Trigger fart sound if key is pressed again rather than held
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    fartTimer = 0;
-                    isOnGround = false;                    
+                    fartTimer = 0;                
                 }                
 
                 // Fart particles (farticles)
-                if (!isDashing)
+                if (!isFarting)
                 {
                     dirtParticle.Play();
-                    isDashing = true;
+                    isFarting = true;
                 }
 
                 // Fart sounds
@@ -106,7 +105,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 dirtParticle.Stop();
-                isDashing = false;
+                isFarting = false;
             }
 
         }
@@ -114,12 +113,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Set variables when player lands on ground
+        // Stop flapping wings when landing
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
-            isDashing = false;
-            dirtParticle.Stop();
             playerAnim.SetBool("Walk", true);
             playerAnim.SetBool("Run", false);
         }

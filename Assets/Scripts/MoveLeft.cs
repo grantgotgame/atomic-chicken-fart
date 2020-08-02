@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class MoveLeft : MonoBehaviour
 {
-    private float speed;
-    private float speedInit = 16;
-    private float dashSpeedModifier = 1.8f;
+    public float speed;
+    private float speedInit = 10f;
+    private float speedScaler = .03f;
+    private float fartSpeedModifier = 1.1f;
     private float leftBound = -10;
 
     public int score = 0;
 
-    public string dashKey = "Fire3";
+    private bool fsmApplied = false;
 
     private PlayerController playerControllerScript;
 
@@ -20,6 +22,7 @@ public class MoveLeft : MonoBehaviour
     void Start()
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+        speed = speedInit;
     }
 
     // Update is called once per frame
@@ -34,22 +37,37 @@ public class MoveLeft : MonoBehaviour
             }
 
             if (!playerControllerScript.gameOver)
-            {
+            {            
                 // Move stuff left
                 transform.Translate(Vector3.left * Time.deltaTime * speed);
 
-                // Increase speed and score (more while dash key is pressed)
-                if (playerControllerScript.isDashing)
+                // Increase score while flying
+                if (!playerControllerScript.isOnGround)
                 {
-                    speed = speedInit * dashSpeedModifier;
-                    score += 2;
+                    score += (int)speed;
                 }
+
+                // Increase speed and double score while farting
+                if (playerControllerScript.isFarting)
+                {                    
+                    speed += speedScaler; // Increase speed gradually
+                    if (!fsmApplied)
+                    {
+                        speed *= fartSpeedModifier;
+                        fsmApplied = true;
+                    }
+                }
+
+                // Decrease speed while not farting
                 else
                 {
-                    speed = speedInit;
-                    score++;
-                }
+                    if (fsmApplied)
+                    {
+                        speed /= fartSpeedModifier;
+                        fsmApplied = false;
+                    }
+                }                
             }
-        }        
+        }
     }
 }
