@@ -26,11 +26,15 @@ public class PlayerController : MonoBehaviour
     private float resetTimerInit = 3f;
     private float fartTimer;
     private float fartTimerInit = .19f;
+    private float pressSpaceTimer;
+    private float pressSpaceTimerInit = 1f;
 
     public bool gameOver = false;
     public bool gameHasStarted = false;
     public bool isFarting = false;
     public bool isOnGround;
+    public bool pressSpaceToggle = false;
+    public bool waitingToStart = false;
 
     // Start is called before the first frame update
     void Start()
@@ -48,17 +52,40 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Player enters game from left of screen
-        if (transform.position.x < gameStartPos && !gameHasStarted)
+        if (transform.position.x < gameStartPos)
         {
             transform.position += new Vector3(playerPreGameSpeed * Time.deltaTime, 0, 0);
         }
         else
         {
-            // Start game
-            gameHasStarted = true;
+            if (!gameHasStarted)
+            {
+                waitingToStart = true;
+                // Cycle between start texts (called in UIManager)
+                pressSpaceTimer -= Time.deltaTime;
+                if (pressSpaceTimer < 0)
+                {
+                    if (pressSpaceToggle)
+                    {
+                        pressSpaceToggle = false;
+                    }
+                    else
+                    {
+                        pressSpaceToggle = true;
+                    }
+                    pressSpaceTimer = pressSpaceTimerInit;
+                }
+                
+                // Start game when Spacebar is pressed
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    waitingToStart = false;
+                    gameHasStarted = true;                    
+                }
+            }            
 
             // Reset game on game over
-            if (gameOver)
+            else if (gameOver)
             {
                 resetTimer -= Time.deltaTime;
                 dirtParticle.Stop();

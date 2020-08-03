@@ -9,6 +9,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text gameOverText;
 
+    private string pressSpaceToStart = "Press Space to Start!";
+    private string pressSpaceToFart = "Press Space to FART!";
+
     private MoveLeft moveLeftScript;
     private PlayerController playerControllerScript;
 
@@ -22,10 +25,31 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scoreText.text = "Score: " + moveLeftScript.score;
-        if (playerControllerScript.gameOver == true)
+        scoreText.text = "Score: " + moveLeftScript.score; // Display score
+
+        // Display final score on game over
+        if (playerControllerScript.gameOver)
         {
             gameOverText.text = "Game Over!\nFinal Score: " + moveLeftScript.score;
+        }
+
+        // Prompt player to press Space after walk in
+        else if (playerControllerScript.waitingToStart)
+        {
+            if (playerControllerScript.pressSpaceToggle)
+            {
+                gameOverText.text = pressSpaceToStart;
+            }
+            else
+            {
+                gameOverText.text = pressSpaceToFart;
+            }
+        }
+
+        // Remove text on game start
+        else
+        {
+            gameOverText.text = "";
         }
     }
 }
