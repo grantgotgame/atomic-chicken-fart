@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip fartSound;
     public AudioClip crashSound;
 
-    private float gameStartPos = -1.5f;
+    private float gameStartPos = 2f;
     private float playerPreGameSpeed = 3f;
 
     private float fartForce = 500f;
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
                     }
                     pressSpaceTimer = pressSpaceTimerInit;
                 }
-                
+
                 // Start game when Spacebar is pressed
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
                     gameHasStarted = true;
                     playerAnim.SetBool("Eat", false);
                 }
-            }            
+            }
 
             // Reset game on game over
             else if (gameOver)
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
 
             // Allow player to fart jump while holding space
             else if (Input.GetKey(KeyCode.Space))
-            {                
+            {
                 playerRb.AddForce(Vector3.up * fartForce); // Apply fart force                
                 fartTimer -= Time.deltaTime; // Countdown timer to prevent fart sounds from overlapping
 
@@ -113,8 +113,8 @@ public class PlayerController : MonoBehaviour
                 // Trigger fart sound if key is pressed again rather than held
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    fartTimer = 0;                
-                }                
+                    fartTimer = 0;
+                }
 
                 // Fart particles (farticles)
                 if (!isFarting)
@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
             if (!waitingToStart)
             {
                 playerAnim.SetBool("Walk", true);
-                playerAnim.SetBool("Run", false);                
+                playerAnim.SetBool("Run", false);
             }
         }
 
