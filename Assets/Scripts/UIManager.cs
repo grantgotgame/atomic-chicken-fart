@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 {
     public TMP_Text scoreText;
     public TMP_Text gameOverText;
+    public TMP_Text hiScoreText;
 
     private string pressSpaceToStart = "Press Space to Start!";
     private string pressSpaceToFart = "Press Space to FART!";
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         scoreText.text = "Score: " + moveLeftScript.score; // Display score
+        hiScoreText.text = "High Score: " + moveLeftScript.hiScore; // Display high score
 
         // Display final score on game over
         if (playerControllerScript.gameOver)

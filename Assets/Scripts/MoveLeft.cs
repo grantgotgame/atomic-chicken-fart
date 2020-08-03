@@ -13,6 +13,7 @@ public class MoveLeft : MonoBehaviour
     private float leftBound = -10;
 
     public int score = 0;
+    public int hiScore = 0;
 
     private bool fsmApplied = false;
 
@@ -23,6 +24,7 @@ public class MoveLeft : MonoBehaviour
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
         speed = speedInit;
+        hiScore = PlayerPrefs.GetInt("hiScore", hiScore);
     }
 
     // Update is called once per frame
@@ -45,6 +47,11 @@ public class MoveLeft : MonoBehaviour
                 if (!playerControllerScript.isOnGround)
                 {
                     score += (int)speed;
+                    if (score > hiScore)
+                    {
+                        hiScore = score;
+                        PlayerPrefs.SetInt("hiScore", hiScore);
+                    }
                 }
 
                 // Increase speed and double score while farting

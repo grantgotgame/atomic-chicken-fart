@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
 
     private float fartForce = 500f;
     private float resetTimer;
-    private float resetTimerInit = 3f;
+    private float resetTimerInit = 4f;
     private float fartTimer;
     private float fartTimerInit = .19f;
     private float pressSpaceTimer;
@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
             if (!gameHasStarted)
             {
                 waitingToStart = true;
+                playerAnim.SetBool("Walk", false);
                 // Cycle between start texts (called in UIManager)
                 pressSpaceTimer -= Time.deltaTime;
                 if (pressSpaceTimer < 0)
@@ -68,10 +69,12 @@ public class PlayerController : MonoBehaviour
                     if (pressSpaceToggle)
                     {
                         pressSpaceToggle = false;
+                        playerAnim.SetBool("Eat", true);
                     }
                     else
                     {
                         pressSpaceToggle = true;
+                        playerAnim.SetBool("Eat", false);
                     }
                     pressSpaceTimer = pressSpaceTimerInit;
                 }
@@ -80,7 +83,8 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     waitingToStart = false;
-                    gameHasStarted = true;                    
+                    gameHasStarted = true;
+                    playerAnim.SetBool("Eat", false);
                 }
             }            
 
@@ -134,7 +138,6 @@ public class PlayerController : MonoBehaviour
                 dirtParticle.Stop();
                 isFarting = false;
             }
-
         }
     }
 
@@ -144,8 +147,11 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
-            playerAnim.SetBool("Walk", true);
-            playerAnim.SetBool("Run", false);
+            if (!waitingToStart)
+            {
+                playerAnim.SetBool("Walk", true);
+                playerAnim.SetBool("Run", false);                
+            }
         }
 
         // Trigger game over when player collides with an obstacle
