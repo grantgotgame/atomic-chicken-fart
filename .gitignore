@@ -1,1 +1,7 @@
 build.bc
+/[Tt]emp/
+/[Bb]uild/
+/.vs/
+/[Ll]ibrary/
+*.sln
+*.csproj
