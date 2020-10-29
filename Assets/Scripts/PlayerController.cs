@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private float gameStartPos = 2f;
     private float playerPreGameSpeed = 3f;
 
-    private float fartForce = 500f;
+    private float fartForce = 300f;
     private float resetTimer;
     private float resetTimerInit = 4f;
     private float fartTimer;

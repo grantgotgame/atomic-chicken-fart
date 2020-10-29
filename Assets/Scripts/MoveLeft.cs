@@ -7,7 +7,7 @@ using UnityEngine;
 public class MoveLeft : MonoBehaviour
 {
     public float speed;
-    private float speedInit = 10f;
+    private float speedInit = 20f;
     private float speedScaler = .03f;
     private float fartSpeedModifier = 1.1f;
     private float leftBound = -10;
