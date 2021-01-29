@@ -79,8 +79,8 @@ public class PlayerController : MonoBehaviour
                     pressSpaceTimer = pressSpaceTimerInit;
                 }
 
-                // Start game when Spacebar is pressed
-                if (Input.GetKeyDown(KeyCode.Space))
+                // Start game when Spacebar is pressed or screen is tapped
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
                 {
                     waitingToStart = false;
                     gameHasStarted = true;
@@ -99,8 +99,8 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            // Allow player to fart jump while holding space
-            else if (Input.GetKey(KeyCode.Space))
+            // Allow player to fart jump while holding space or touching screen
+            else if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
             {
                 playerRb.AddForce(Vector3.up * fartForce); // Apply fart force                
                 fartTimer -= Time.deltaTime; // Countdown timer to prevent fart sounds from overlapping
