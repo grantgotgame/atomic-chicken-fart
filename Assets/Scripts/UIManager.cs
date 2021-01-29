@@ -10,8 +10,8 @@ public class UIManager : MonoBehaviour
     public TMP_Text gameOverText;
     public TMP_Text hiScoreText;
 
-    private string pressSpaceToStart = "Press Space to Start!";
-    private string pressSpaceToFart = "Press Space to FART!";
+    private string pressSpaceToStart = "Tap to Start!";
+    private string pressSpaceToFart = "Tap to FART!";
 
     private MoveLeft moveLeftScript;
     private PlayerController playerControllerScript;
