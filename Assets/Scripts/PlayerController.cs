@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviour
     public AudioClip crashSound;
 
     private float gameStartPos = 2f;
-    private float playerPreGameSpeed = 3f;
+    private float playerPreGameSpeed = .05f;
 
-    private float fartForce = 300f;
+    private float fartForce = 800f;
     private float resetTimer;
     private float resetTimerInit = 3f;
     private float fartTimer;
@@ -47,15 +47,29 @@ public class PlayerController : MonoBehaviour
         dirtParticle.Stop();
         gameOver = false;
         gameHasStarted = false;
+        walkingIn = true;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
+    {
+        // Start game when Spacebar is pressed or screen is tapped
+        if (waitingToStart)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            {
+                waitingToStart = false;
+                gameHasStarted = true;
+                playerAnim.SetBool("Eat", false);
+            }
+        }
+    }
+    void FixedUpdate()
     {
         // Player enters game from left of screen
         if (transform.position.x < gameStartPos)
         {
-            transform.position += new Vector3(playerPreGameSpeed * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(playerPreGameSpeed, 0, 0);
         }
         else
         {
@@ -82,14 +96,6 @@ public class PlayerController : MonoBehaviour
                     playerAnim.SetBool("Eat", false);
                 }
                 pressSpaceTimer = pressSpaceTimerInit;
-            }
-
-            // Start game when Spacebar is pressed or screen is tapped
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-            {
-                waitingToStart = false;
-                gameHasStarted = true;
-                playerAnim.SetBool("Eat", false);
             }
         }
 
