@@ -29,10 +29,11 @@ public class PlayerController : MonoBehaviour
     private float pressSpaceTimer;
     private float pressSpaceTimerInit = 1f;
 
+    public bool walkingIn = true;
     public bool gameOver = false;
     public bool gameHasStarted = false;
     public bool isFarting = false;
-    public bool isOnGround;
+    public bool isOnGround; // called in MoveLeft script
     public bool pressSpaceToggle = false;
     public bool waitingToStart = false;
 
@@ -58,49 +59,55 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (!gameHasStarted)
-            {
-                waitingToStart = true;
-                playerAnim.SetBool("Walk", false);
-                // Cycle between start texts (called in UIManager)
-                pressSpaceTimer -= Time.deltaTime;
-                if (pressSpaceTimer < 0)
-                {
-                    if (pressSpaceToggle)
-                    {
-                        pressSpaceToggle = false;
-                        playerAnim.SetBool("Eat", true);
-                    }
-                    else
-                    {
-                        pressSpaceToggle = true;
-                        playerAnim.SetBool("Eat", false);
-                    }
-                    pressSpaceTimer = pressSpaceTimerInit;
-                }
+            walkingIn = false;
+        }
 
-                // Start game when Spacebar is pressed or screen is tapped
-                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        if (!walkingIn && !gameHasStarted)
+        {
+            waitingToStart = true;
+            playerAnim.SetBool("Walk", false);
+
+            // Cycle between start texts (called in UIManager)
+            pressSpaceTimer -= Time.deltaTime;
+            if (pressSpaceTimer < 0)
+            {
+                if (pressSpaceToggle)
                 {
-                    waitingToStart = false;
-                    gameHasStarted = true;
+                    pressSpaceToggle = false;
+                    playerAnim.SetBool("Eat", true);
+                }
+                else
+                {
+                    pressSpaceToggle = true;
                     playerAnim.SetBool("Eat", false);
                 }
+                pressSpaceTimer = pressSpaceTimerInit;
             }
 
-            // Reset game on game over
-            else if (gameOver)
+            // Start game when Spacebar is pressed or screen is tapped
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
             {
-                resetTimer -= Time.deltaTime;
-                dirtParticle.Stop();
-                if (resetTimer < 0)
-                {
-                    SceneManager.LoadScene("Prototype 3");
-                }
+                waitingToStart = false;
+                gameHasStarted = true;
+                playerAnim.SetBool("Eat", false);
             }
+        }
 
-            // Allow player to fart jump while holding space or touching screen
-            else if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
+        // Reset game on game over
+        if (gameOver)
+        {
+            resetTimer -= Time.deltaTime;
+            dirtParticle.Stop();
+            if (resetTimer < 0)
+            {
+                SceneManager.LoadScene("Prototype 3");
+            }
+        }
+
+        // Allow player to fart jump while holding space or touching screen
+        if (gameHasStarted)
+        {
+            if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
             {
                 playerRb.AddForce(Vector3.up * fartForce); // Apply fart force                
                 fartTimer -= Time.deltaTime; // Countdown timer to prevent fart sounds from overlapping
@@ -132,7 +139,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            // Stop farting when player releases spacebar
+            // Stop farting when player releases spacebar or tap
             else
             {
                 dirtParticle.Stop();
