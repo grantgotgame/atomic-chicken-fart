@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Allow player to fart jump while holding space or touching screen
-        if (gameHasStarted)
+        if (gameHasStarted && !gameOver)
         {
             if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
             {
