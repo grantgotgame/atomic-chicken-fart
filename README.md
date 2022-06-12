@@ -1,6 +1,6 @@
 # Atomic Chicken Fart
 Playable here:
-https://play.unity.com/mg/other/atomic-chicken-fart
+https://komodeo.itch.io/atomic-chicken-fart
 
 Sound on for fart noises. ;)
 
